@@ -1,14 +1,19 @@
-﻿using SaveLoadCore.Models.Components;
+﻿using System;
+using SaveLoadCore.Models.Components;
 using UnityEditor.SceneManagement;
+using UnityEditorInternal;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace SaveLoadCore.Models
 {
-    public class Data
+    [Serializable]public class Data
     {
-        private ImageComponent _image;
-
-
+        public int prefabId;
+        public int personalId;
+        public bool activeSelf;
+        public ImageComponent Image;
+        public TransformComponent Transform;
 
     }
 }

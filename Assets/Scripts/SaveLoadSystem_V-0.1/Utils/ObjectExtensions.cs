@@ -23,9 +23,26 @@ namespace SaveLoadCore.Utils
                 var GO = Object.Instantiate(prefab);
                 if (controller)
                 {
-                    var data = GO.AddComponent<GameObjectDataController>();
-                    data.Init(prefab.GetInstanceID());
-                    controller.AddData(data);
+                    var dataController = GO.AddComponent<GameObjectDataController>();
+                    
+                    
+                    if (loadData == null)
+                    {
+                        loadData = new Data()
+                        {
+                            personalId = GO.GetInstanceID(),
+                            prefabId = prefab.GetInstanceID()
+                        };
+                        dataController.Init(loadData);
+                    }
+                    else
+                    {
+                        loadData.personalId = GO.GetInstanceID();
+                        loadData.prefabId = prefab.GetInstanceID();
+                        dataController.LoadData(loadData);
+                    }
+                    
+                    controller.AddData(dataController);
                 }
                 if(firstEnter)
                 {
@@ -43,8 +60,14 @@ namespace SaveLoadCore.Utils
                 var GO = Object.Instantiate(prefab,parrent);
                 if (controller)
                 {
+                    if (loadData == null)
+                        loadData = new Data()
+                        {
+                            personalId = GO.GetInstanceID(),
+                            prefabId = prefab.GetInstanceID()
+                        };
                     var data = GO.AddComponent<GameObjectDataController>();
-                    data.Init(prefab.GetInstanceID());
+                    data.Init(loadData);
                     controller.AddData(data);
                 }
                 if(firstEnter)
@@ -62,8 +85,14 @@ namespace SaveLoadCore.Utils
                 var GO = Object.Instantiate(prefab,pos, Quaternion.identity);
                 if (controller)
                 {
+                    if (loadData == null)
+                        loadData = new Data()
+                        {
+                            personalId = GO.GetInstanceID(),
+                            prefabId = prefab.GetInstanceID()
+                        };
                     var data = GO.AddComponent<GameObjectDataController>();
-                    data.Init(prefab.GetInstanceID());
+                    data.Init(loadData);
                     controller.AddData(data);
                 }
                 if(firstEnter)
@@ -81,8 +110,14 @@ namespace SaveLoadCore.Utils
                 var GO = Object.Instantiate(prefab,pos,qua);
                 if (controller)
                 {
+                    if (loadData == null)
+                        loadData = new Data()
+                        {
+                            personalId = GO.GetInstanceID(),
+                            prefabId = prefab.GetInstanceID()
+                        };
                     var data = GO.AddComponent<GameObjectDataController>();
-                    data.Init(prefab.GetInstanceID());
+                    data.Init(loadData);
                     controller.AddData(data);
                 }
                 if(firstEnter)

@@ -5,59 +5,51 @@ using UnityEngine.UI;
 
 namespace SaveLoadCore.Models.Components
 {
-    [Serializable]public class ImageComponent
+    [Serializable]public class ImageComponent : CustomComponentBase
     {
-        private string _jsonSource;
+        private string _spriteSource;
         private ColorInfo _color;
         
         public bool enabled;
         public bool maskable;
         public bool raycastTarget;
-        
-        
-        public Color color
-        {
-            get => new Color(_color.r, _color.g, _color.b, _color.a);
-            set => _color = new ColorInfo(value.r, value.g, value.b, value.a);
-        }
-        public Sprite sprite 
-        {
-            get => JsonUtility.FromJson<Sprite>(_jsonSource);
-            set => _jsonSource = JsonUtility.ToJson(value);
-        }
 
-        public Material material
+
+        public override void SetInfo(GameObject go)
         {
-            get => null;
-            set {} 
-            //TODO Сделать сохранение материала
+            var img = go.GetComponent<Image>();
+            _spriteSource = JsonUtility.ToJson(img.sprite);
+            _color = new ColorInfo(img.color);
+            enabled = img.enabled;
+            maskable = img.maskable;
+            raycastTarget = img.raycastTarget;
+            
+            
         }
 
-        
-        
-        
-        
-        
-        class ColorInfo
+        public override void AttachComponentToGameObject(GameObject go)
         {
-            public float r;
-            public float g;
-            public float b;
-            public float a;
+            var img = go.AddComponent<Image>();
+            img.sprite = JsonUtility.FromJson<Sprite>(_spriteSource);
+            img.color = _color.value;
+            img.enabled = enabled;
+            img.maskable = maskable;
+            img.raycastTarget = raycastTarget;
+        }
+        [Serializable]class ColorInfo
+        {
+            readonly float r;
+            readonly float g;
+            readonly float b;
+            readonly float a;
+            public Color value => new Color(r, g, b, a);
 
-            public ColorInfo(float r,float g,float b,float a)
+            public ColorInfo(Color color)
             {
-                this.r = r;
-                this.g = g;
-                this.b = b;
-                this.a = a;
-            }
-            public ColorInfo(float r,float g,float b)
-            {
-                this.r = r;
-                this.g = g;
-                this.b = b;
-                this.a = 1;
+                r = color.r;
+                g = color.g;
+                b = color.b;
+                a = color.a;
             }
         
         }

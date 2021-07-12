@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using SaveLoadCore.Models;
+using SaveLoadCore.Utils;
 using UnityEngine;
-using Utils;
-using Object = UnityEngine.Object;
 
 namespace SaveLoadCore.Controllers
 {
@@ -11,27 +11,55 @@ namespace SaveLoadCore.Controllers
         public static SaveLoadController instance;
         private Dictionary<int, GameObjectDataController> dataMap;
 
-        private PrefabsData prefabsData;
+        [SerializeField]private PrefabsData prefabsData = new PrefabsData();
+
+        public SaveDataConfig config = new SaveDataConfig();
+
+        private void Awake()
+        {
+            if (!instance) instance = this;
+            else Destroy(this);
+        }
 
         private void Start()
         {
-            prefabsData = new PrefabsData();
+            //prefabsData.Init(Resources.LoadAll<GameObject>(""));
         }
         void Init()
         {
-            //TODO загрузка данных
-
             dataMap = new Dictionary<int, GameObjectDataController>();
         }
 
-        void SaveData()
+        public void SaveData()
         {
-            
+            var map = new Dictionary<int, Data>();
+            foreach (var dataController in dataMap)
+            {
+                map.Add(dataController.Key,dataController.Value.data);
+            }
+
+            PersistentCache.Save(map);
         }
 
-        void LoadData()
+        public void LoadData()
         {
-            
+            var map = PersistentCache.TryLoad<Dictionary<int, Data>>();
+            if (map != null)
+            {
+                Debug.LogWarning("Success load data");
+                dataMap = new Dictionary<int, GameObjectDataController>();
+                foreach (var obj in map)
+                {
+                    var data = obj.Value;
+                    var id = data.prefabId;
+                    GameObject prefab = prefabsData[id];
+                    gameObject.Create(prefab, obj.Value);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Fail load data");
+            }
         }
 
         public void AddData(GameObjectDataController data)
@@ -41,13 +69,12 @@ namespace SaveLoadCore.Controllers
 
             try
             {
-                var d = dataMap[data.prefabId];
-                //TODO перезапись данных
+                dataMap[data.personalId] = data;
             }
             catch (Exception e)
             {
                 Debug.LogWarning(e);
-                dataMap.Add(data.prefabId,data);
+                dataMap.Add(data.personalId,data);
             }
         }
 
