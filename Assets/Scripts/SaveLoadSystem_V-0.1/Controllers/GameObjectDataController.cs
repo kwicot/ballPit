@@ -1,10 +1,7 @@
-﻿using System;
-using Kwicot.Controllers;
-using SaveLoadCore.Models;
+﻿using SaveLoadCore.Models;
 using SaveLoadCore.Models.Components;
 using UnityEngine;
 using UnityEngine.UI;
-using Object = System.Object;
 
 namespace SaveLoadCore.Controllers
 {

@@ -72,7 +72,6 @@ namespace SimpleInputCore.Controllers
 
         private void Update()
         {
-            var h = Slider.GetComponent<RectTransform>().anchorMax;
         }
 
 

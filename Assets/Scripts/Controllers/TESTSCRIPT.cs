@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Reflection;
-using SaveLoadCore.Controllers;
+﻿using SaveLoadCore.Controllers;
 using SaveLoadCore.Utils;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.GameCenter;
-using UnityEngine.UI;
-using Utils;
-using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace Kwicot.Controllers

@@ -1,9 +1,5 @@
 ﻿using System;
 using SaveLoadCore.Models.Components;
-using UnityEditor.SceneManagement;
-using UnityEditorInternal;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace SaveLoadCore.Models
 {
